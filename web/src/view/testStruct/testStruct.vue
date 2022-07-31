@@ -183,6 +183,7 @@ const connTest = (row) => {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
     }).then(() => {
+      //这里可以写自己的逻辑
             alert(row.name)
             //deleteTestStructFunc(row)
             
