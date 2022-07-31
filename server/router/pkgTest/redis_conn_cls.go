@@ -19,6 +19,7 @@ func (s *RedisConnClsRouter) InitRedisConnClsRouter(Router *gin.RouterGroup) {
 		RedisClsRouter.DELETE("deleteRedisConnCls", RedisClsApi.DeleteRedisConnCls) // 删除RedisConnCls
 		RedisClsRouter.DELETE("deleteRedisConnClsByIds", RedisClsApi.DeleteRedisConnClsByIds) // 批量删除RedisConnCls
 		RedisClsRouter.PUT("updateRedisConnCls", RedisClsApi.UpdateRedisConnCls)    // 更新RedisConnCls
+		RedisClsRouter.POST("testRedisConn", RedisClsApi.TestRedisConn)   // 测试RedisConn
 	}
 	{
 		RedisClsRouterWithoutRecord.GET("findRedisConnCls", RedisClsApi.FindRedisConnCls)        // 根据ID获取RedisConnCls

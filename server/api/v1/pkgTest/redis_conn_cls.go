@@ -160,3 +160,28 @@ func (RedisClsApi *RedisConnClsApi) GetRedisConnClsList(c *gin.Context) {
         }, "获取成功", c)
     }
 }
+
+
+
+func (RedisClsApi *RedisConnClsApi) TestRedisConn(c *gin.Context) {
+	var RedisCls pkgTest.RedisConnCls
+	_ = c.ShouldBindQuery(&RedisCls)
+	if err := RedisClsService.TestRedisConn(RedisCls); err != nil {
+		global.GVA_LOG.Error("测试redis连接失败!", zap.Error(err))
+		response.FailWithMessage("测试redis连接失败", c)
+	} else {
+		response.OkWithMessage("测试redis连接成功", c)
+	}
+}
+
+// 下一步注册router
+func (RedisClsApi *RedisConnClsApi) TestRedisConnCls(c *gin.Context) {
+	var RedisCls pkgTest.RedisConnCls
+	_ = c.ShouldBindQuery(&RedisCls)
+	if err := RedisClsService.TestRedisConnCls(RedisCls); err != nil {
+		global.GVA_LOG.Error("测试redis cluster连接失败!", zap.Error(err))
+		response.FailWithMessage("测试redis cluster连接失败", c)
+	} else {
+		response.OkWithMessage("测试redis cluster连接成功", c)
+	}
+}
