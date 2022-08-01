@@ -39,7 +39,6 @@
             <template #default="scope">
             <el-button type="primary" link icon="edit" size="small" class="table-button" @click="updateTestStructFunc(scope.row)">变更</el-button>
             <el-button type="primary" link icon="delete" size="small" @click="deleteRow(scope.row)">删除</el-button>
-            <el-button type="primary" link icon="delete" size="small" @click="connTest(scope.row)">测试连接</el-button>
             </template>
         </el-table-column>
         </el-table>
@@ -177,18 +176,6 @@ const deleteRow = (row) => {
     }
 
 
-// 删除行
-const connTest = (row) => {
-    ElMessageBox.confirm('确定要连接吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-    }).then(() => {
-      //这里可以写自己的逻辑
-            alert(row.name)
-            //deleteTestStructFunc(row)
-            
-        })
-    }
 
 // 批量删除控制标记
 const deleteVisible = ref(false)

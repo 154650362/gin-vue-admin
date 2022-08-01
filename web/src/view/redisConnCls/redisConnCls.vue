@@ -52,6 +52,7 @@
             <template #default="scope">
             <el-button type="primary" link icon="edit" size="small" class="table-button" @click="updateRedisConnClsFunc(scope.row)">变更</el-button>
             <el-button type="primary" link icon="delete" size="small" @click="deleteRow(scope.row)">删除</el-button>
+            <el-button type="primary" link icon="delete" size="small" @click="connTest(scope.row)">测试连接</el-button>
             </template>
         </el-table-column>
         </el-table>
@@ -75,7 +76,7 @@
         <el-form-item label="IP:"  prop="IP" >
           <el-input v-model="formData.IP" :clearable="true"  placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="端口:"  prop="port" >
+        <el-form-item label="port:"  prop="port" >
           <el-input v-model="formData.port" :clearable="true"  placeholder="请输入" />
         </el-form-item>
         <el-form-item label="pwd:"  prop="pwd" >
@@ -108,7 +109,8 @@ import {
   deleteRedisConnClsByIds,
   updateRedisConnCls,
   findRedisConnCls,
-  getRedisConnClsList
+  getRedisConnClsList,
+  testRedisConn
 } from '@/api/redisConnCls'
 
 // 全量引入格式化工具 请按需保留
@@ -279,6 +281,33 @@ const deleteRedisConnClsFunc = async (row) => {
         getTableData()
     }
 }
+
+
+// 测试连接 add by liuyu
+const connTest = (row) => {
+    // ElMessageBox.confirm('确定要连接吗?', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    // }).then(() => {
+    //   //这里可以写自己的逻辑
+    //         alert(row)
+    //         console.log('开始测试connTestFunc(row)')
+    //         //deleteTestStructFunc(row)
+
+
+    //        // connTestRedis(row)
+
+    const res =  testRedisConn(row)
+    if (res.code === 0) {
+        ElMessage({
+                type: 'success',
+                message: 'testConn成功'
+            })
+        }
+        getTableData()
+    }
+    //)
+  //}
 
 // 弹窗控制标记
 const dialogFormVisible = ref(false)

@@ -95,3 +95,12 @@ export const getRedisConnClsList = (params) => {
     params
   })
 }
+
+
+export const testRedisConn = (data) => {
+  return service({
+    url: '/RedisCls/testRedisConn',
+    method: 'post',
+    data
+  })
+}

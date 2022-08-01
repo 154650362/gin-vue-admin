@@ -2,14 +2,15 @@ package pkgTest
 
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/pkgTest"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
-    pkgTestReq "github.com/flipped-aurora/gin-vue-admin/server/model/pkgTest/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
-    "github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/pkgTest"
+	pkgTestReq "github.com/flipped-aurora/gin-vue-admin/server/model/pkgTest/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	//"fmt"
 )
 
 type RedisConnClsApi struct {
@@ -165,7 +166,21 @@ func (RedisClsApi *RedisConnClsApi) GetRedisConnClsList(c *gin.Context) {
 
 func (RedisClsApi *RedisConnClsApi) TestRedisConn(c *gin.Context) {
 	var RedisCls pkgTest.RedisConnCls
-	_ = c.ShouldBindQuery(&RedisCls)
+	_ = c.ShouldBindJSON(&RedisCls)
+
+	global.GVA_LOG.Info(RedisCls.IP+RedisCls.Port)
+	//fmt.Println(RedisCls.IP+RedisCls.Port)
+
+	verify := utils.Rules{
+		"RedisClusterName":{utils.NotEmpty()},
+		"IP":{utils.NotEmpty()},
+		"Port":{utils.NotEmpty()},
+	}
+	if err := utils.Verify(RedisCls, verify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
 	if err := RedisClsService.TestRedisConn(RedisCls); err != nil {
 		global.GVA_LOG.Error("测试redis连接失败!", zap.Error(err))
 		response.FailWithMessage("测试redis连接失败", c)
@@ -177,7 +192,16 @@ func (RedisClsApi *RedisConnClsApi) TestRedisConn(c *gin.Context) {
 // 下一步注册router
 func (RedisClsApi *RedisConnClsApi) TestRedisConnCls(c *gin.Context) {
 	var RedisCls pkgTest.RedisConnCls
-	_ = c.ShouldBindQuery(&RedisCls)
+	_ = c.ShouldBindJSON(&RedisCls)
+	verify := utils.Rules{
+		"RedisClusterName":{utils.NotEmpty()},
+		"IP":{utils.NotEmpty()},
+		"Port":{utils.NotEmpty()},
+	}
+	if err := utils.Verify(RedisCls, verify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
 	if err := RedisClsService.TestRedisConnCls(RedisCls); err != nil {
 		global.GVA_LOG.Error("测试redis cluster连接失败!", zap.Error(err))
 		response.FailWithMessage("测试redis cluster连接失败", c)
